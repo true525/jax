@@ -1,16 +1,65 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>宇宙の驚異</title>
+    <style>
+        #calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 160px;
+            margin: auto;
+        }
+        #calculator button {
+            height: 40px;
+            font-size: large;
+        }
+        #display {
+            grid-column: span 4;
+            height: 40px;
+            text-align: right;
+            padding-right: 5px;
+            font-size: large;
+        }
+    </style>
 </head>
 <body>
-    <h1 id="header">宇宙の驚異</h1>
-    <img src="galaxy.jpg" alt="銀河" id="galaxy-image">
-    <p>
-        宇宙はその広大さと美しさで私たちを常に驚かせてくれます。星々の光が無数に広がる銀河、色とりどりの星雲、壮大なスーパーノヴァの爆発。これらはすべて、宇宙の驚異的な現象の一部に過ぎません。
-    </p>
-    <p>
-        このウェブサイトでは、宇宙の最新の発見や興味深い事実を共有します。宇宙の驚異を一緒に探求しましょう。
-    </p>
+    <div id="calculator">
+        <input id="display" disabled>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>/</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>*</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>-</button>
+        <button>0</button>
+        <button>.</button>
+        <button>=</button>
+        <button>+</button>
+    </div>
+
+    <script>
+        let display = document.getElementById('display');
+        let buttons = Array.from(document.getElementsByTagName('button'));
+        buttons.map( button => {
+            button.addEventListener('click', (e) => {
+                if(e.target.innerText === '=') {
+                    try {
+                        display.value = eval(display.value);
+                    } catch {
+                        display.value = "Error";
+                    }
+                } else if(e.target.innerText === 'C') {
+                    display.value = '';
+                } else {
+                    display.value += e.target.innerText;
+                }
+            });
+        });
+    </script>
 </body>
 </html>

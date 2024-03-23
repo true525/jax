@@ -1,51 +1,100 @@
-import React, { Component } from "react"
-import PropTypes from "prop-types"
-import { BudgetMarker } from "./budget-marker.js"
-import styles from "./calculator-base.css"
+もちろんです。以下に、関数電卓とグラフ表示機能を備えたHTML, CSS, そして JavaScriptのコードを示します。このコードでは、[math.js](https://mathjs.org/)というライブラリを使用しています。このライブラリは、数学的な計算や関数の評価、そしてグラフの描画を行うことができます。
 
-export class CalculatorBase extends Component {
-    static propTypes = {
-        name: PropTypes.string,
-        item_cost: PropTypes.number,
-        item_amount: PropTypes.number,
-    };
-    render() {
-        const { name, item_cost, item_amount } = this.props;
-        const calcutions_array = [item_cost, '*', item_amount]
-        return (
-            <div>
-                <p>{ name }</p>
-                <p>Current Total Cost: $ {item_cost * item_amount}</p>
-                <BudgetMarker total_cost={item_cost * item_amount} />
-                <div className={styles.calculator_box}>
-                <p>Make Side Calculations</p>
-                    <div className={ styles.screen }>
-                            <p>{ calcutions_array.join(" ") }</p>
-                            <p>Answer</p>
-                    </div>
-                    <button>Item Cost: $ { item_cost }</button>
-                    <button>Item Amount: { item_amount }</button>
-                    <button>Reset</button>
-                    <hr />
-                    <button>Clear</button>
-                    <button>7</button>
-                    <button>8</button>
-                    <button>9</button>
-                    <button>/</button>
-                    <button>4</button>
-                    <button>5</button>
-                    <button>6</button>
-                    <button>*</button>
-                    <button>1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>+</button>
-                    <button>.</button>
-                    <button>0</button>
-                    <button>=</button>
-                    <button>-</button>
-                </div>
-            </div>
-        );
-    }
-};
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-size: 2em;
+        }
+        #calculator {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            max-width: 320px;
+            margin: auto;
+        }
+        #calculator button {
+            height: 80px;
+        }
+        #display {
+            grid-column: span 4;
+            height: 80px;
+            text-align: right;
+            padding-right: 10px;
+        }
+        #graph {
+            width: 320px;
+            height: 320px;
+            margin: auto;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.4.0/math.min.js"></script>
+</head>
+<body>
+    <div id="calculator">
+        <input id="display" disabled>
+        <button>7</button>
+        <button>8</button>
+        <button>9</button>
+        <button>÷</button>
+        <button>4</button>
+        <button>5</button>
+        <button>6</button>
+        <button>×</button>
+        <button>1</button>
+        <button>2</button>
+        <button>3</button>
+        <button>-</button>
+        <button>0</button>
+        <button>.</button>
+        <button>=</button>
+        <button>+</button>
+        <button>√</button>
+        <button>x</button>
+        <button>sin</button>
+        <button>cos</button>
+        <button>tan</button>
+    </div>
+    <canvas id="graph"></canvas>
+
+    <script>
+        let display = document.getElementById('display');
+        let buttons = Array.from(document.getElementsByTagName('button'));
+        let graph = document.getElementById('graph');
+        let ctx = graph.getContext('2d');
+        buttons.map( button => {
+            button.addEventListener('click', (e) => {
+                if(e.target.innerText === '=') {
+                    try {
+                        display.value = math.evaluate(display.value.replace('÷', '/').replace('×', '*').replace('√', 'sqrt'));
+                        if(display.value.includes('x')) {
+                            drawGraph(display.value);
+                        }
+                    } catch {
+                        display.value = "Error";
+                    }
+                } else if(e.target.innerText === 'C') {
+                    display.value = '';
+                    ctx.clearRect(0, 0, graph.width, graph.height);
+                } else {
+                    display.value += e.target.innerText;
+                }
+            });
+        });
+
+        function drawGraph(expr) {
+            ctx.clearRect(0, 0, graph.width, graph.height);
+            ctx.beginPath();
+            for(let x = 0; x <= graph.width; x++) {
+                let y = math.evaluate(expr.replace('x', x / 100));
+                ctx.lineTo(x, graph.height - y * 100);
+            }
+            ctx.stroke();
+        }
+    </script>
+</body>
+</html>
+```
+
+このコードは、基本

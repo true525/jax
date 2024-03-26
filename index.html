@@ -1,94 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            font-size: 2em;
+            background-color: #f0f0f0; /* グレーの背景色 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* 画面の高さいっぱいに表示 */
         }
-        #calculator {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            max-width: 320px;
-            margin: auto;
-        }
-        #calculator button {
-            height: 80px;
-        }
-        #display {
-            grid-column: span 4;
-            height: 80px;
-            text-align: right;
-            padding-right: 10px;
-        }
-        #graph {
-            width: 320px;
-            height: 320px;
-            margin: auto;
+        .message {
+            font-size: 24px;
+            padding: 10px;
+            background-color: white; /* メッセージの背景色 */
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/10.4.0/math.min.js"></script>
 </head>
 <body>
-    <div id="calculator">
-        <input id="display" disabled>
-        <button>7</button>
-        <button>8</button>
-        <button>9</button>
-        <button>÷</button>
-        <button>4</button>
-        <button>5</button>
-        <button>6</button>
-        <button>×</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>-</button>
-        <button>0</button>
-        <button>.</button>
-        <button>=</button>
-        <button>+</button>
-        <button>√</button>
-        <button>x</button>
-        <button>sin</button>
-        <button>cos</button>
-        <button>tan</button>
-    </div>
-    <canvas id="graph"></canvas>
-
-    <script>
-        let display = document.getElementById('display');
-        let buttons = Array.from(document.getElementsByTagName('button'));
-        let graph = document.getElementById('graph');
-        let ctx = graph.getContext('2d');
-        buttons.map( button => {
-            button.addEventListener('click', (e) => {
-                if(e.target.innerText === '=') {
-                    try {
-                        display.value = math.evaluate(display.value.replace('÷', '/').replace('×', '*').replace('√', 'sqrt'));
-                        if(display.value.includes('x')) {
-                            drawGraph(display.value);
-                        }
-                    } catch {
-                        display.value = "Error";
-                    }
-                } else if(e.target.innerText === 'C') {
-                    display.value = '';
-                    ctx.clearRect(0, 0, graph.width, graph.height);
-                } else {
-                    display.value += e.target.innerText;
-                }
-            });
-        });
-
-        function drawGraph(expr) {
-            ctx.clearRect(0, 0, graph.width, graph.height);
-            ctx.beginPath();
-            for(let x = 0; x <= graph.width; x++) {
-                let y = math.evaluate(expr.replace('x', x / 100));
-                ctx.lineTo(x, graph.height - y * 100);
-            }
-            ctx.stroke();
-        }
-    </script>
+    <div class="message">考えとく</div>
 </body>
 </html>
